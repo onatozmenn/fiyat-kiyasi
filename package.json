@@ -1,0 +1,13 @@
+{
+  "name": "fiyatkiyasla",
+  "version": "1.0.0",
+  "description": "Türkiye market fiyat karşılaştırma uygulaması",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["fiyat", "karşılaştırma", "market", "a101", "bim", "migros"],
+  "author": "",
+  "license": "ISC"
+}

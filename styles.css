@@ -1,0 +1,1038 @@
+:root {
+    --bg-primary: #191919;
+    --bg-secondary: #252525;
+    --bg-input: #2D2D2D;
+    --text-primary: #F3F2EE;
+    --text-secondary: #9B9B9B;
+    --accent: #D97757;
+    /* Claude.ai Burnt Orange */
+    --accent-hover: #E88B6B;
+    --border: #383838;
+    --border-focus: #555555;
+    --radius-lg: 12px;
+    --radius-md: 8px;
+    --font-serif: 'Source Serif 4', Georgia, serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: var(--font-serif);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Claude tarzı yumuşak selection rengi */
+::selection {
+    background: rgba(217, 119, 87, 0.3);
+    color: #fff;
+}
+
+.app-container {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 0;
+}
+
+.logo-text {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.logo-accent {
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    background: var(--bg-secondary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.live-indicator {
+    width: 6px;
+    height: 6px;
+    background: #69C77E;
+    border-radius: 50%;
+}
+
+.source-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 80px;
+}
+
+.search-section {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.search-title {
+    font-family: var(--font-serif);
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+}
+
+.search-title span {
+    color: var(--accent);
+}
+
+.search-subtitle {
+    font-family: var(--font-serif);
+    color: var(--text-secondary);
+    font-size: 18px;
+    margin-bottom: 48px;
+    font-weight: 400;
+}
+
+/* Claude Style Input */
+/* SEARCH BOX - Premium Hero Design */
+.search-box {
+    position: relative;
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto 40px auto;
+    display: flex;
+    align-items: center;
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.search-box:focus-within {
+    border-color: rgba(217, 119, 87, 0.5);
+    background: rgba(30, 30, 30, 0.95);
+    box-shadow: 0 12px 48px rgba(217, 119, 87, 0.2);
+    transform: translateY(-2px) scale(1.01);
+}
+
+
+.search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    /* Büyütüldü */
+    color: #fff;
+    outline: none;
+    padding: 12px 20px;
+    font-weight: 400;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 300;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+.search-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    /* Büyütüldü */
+    border-radius: 12px;
+    /* Büyütüldü */
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 8px;
+    box-shadow: 0 4px 12px rgba(217, 119, 87, 0.3);
+}
+
+.search-btn:hover {
+    background: #e08566;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(217, 119, 87, 0.4);
+}
+
+/* Quick searches kaldırıldı */
+
+/* Liste Görünümü */
+.results-section {
+    width: 100%;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.results-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    color: var(--text-primary);
+}
+
+.results-count {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Tek sütun liste görünümü */
+    gap: 12px;
+}
+
+.product-card {
+    display: flex;
+    align-items: center;
+    /* Ortala */
+    gap: 16px;
+    /* 20px -> 16px */
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px 16px;
+    /* Sıkılaştırdık */
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateX(4px);
+    border-color: var(--accent);
+    background: #2A2A2A;
+}
+
+.product-header {
+    margin: 0;
+    flex-shrink: 0;
+    position: relative;
+    /* Badge için */
+}
+
+.product-img {
+    width: 64px;
+    /* 72px -> 64px */
+    height: 64px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 8px;
+    /* 10px -> 8px */
+    padding: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.product-img-placeholder {
+    width: 64px;
+    height: 64px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    text-align: center;
+    line-height: 1.2;
+}
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 20px;
+}
+
+.product-title {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-brand {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Yeni Fiyat Bloğu (Sağ Taraf) */
+/* PRODUCT PRICES (HIERARCHY) */
+.product-prices {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 130px;
+    /* Sabit alan */
+    gap: 4px;
+}
+
+/* FİYAT ALANI DÜZELTME */
+.price-container {
+    display: flex;
+    flex-direction: row;
+    /* Yan yana */
+    align-items: baseline;
+    /* Taban hizala */
+    gap: 2px;
+    line-height: 1;
+}
+
+.price-wrapper {
+    display: none;
+    /* Artık gerek yok, container yönetiyor */
+}
+
+/* KÜÇÜK "En Ucuz" Etiketi */
+.market-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: rgba(217, 119, 87, 0.2);
+    color: #D97757;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 6px;
+    display: inline-block;
+}
+
+.price-currency {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    /* Hafif optik düzeltme */
+}
+
+.price-range {
+    font-size: 2.2rem;
+    /* HERO PRICE */
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.price-details {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.price-max {
+    font-size: 0.95rem;
+    color: #888;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+.savings-tag {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    font-size: 0.85rem;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.market-count {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* Hover İkonu Kaldırıldı - Kartlar Artık Tıklanabilir Değil */
+
+/* Kart İçi Mini Market Listesi */
+/* Kart İçi Mini Market Listesi (3. Katman - Detay) */
+.mini-market-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* Daha sıkışık */
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mini-market-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #888;
+    padding: 2px 0;
+    transition: all 0.2s;
+    opacity: 0.8;
+}
+
+.mini-market-item:hover {
+    color: #ccc;
+    opacity: 1;
+}
+
+/* EN UCUZ MARKET (HIGHLIGHT) */
+.mini-market-item.best {
+    color: #fff;
+    font-weight: 600;
+    opacity: 1;
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+/* Check ikonu */
+.mini-market-item.best .mini-market-price::after {
+    content: '✓';
+    color: var(--accent);
+    margin-left: 6px;
+    font-weight: 800;
+}
+
+.mini-market-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mini-market-name::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 3px;
+    background: currentColor;
+    border-radius: 50%;
+    opacity: 0.4;
+}
+
+.mini-market-price {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+/* UNIT PRICE TAG (Liste İçi) */
+.unit-price-tag {
+    font-size: 10px;
+    color: #555;
+    margin-left: 6px;
+}
+
+/* ANA LİSTE CONTAINER */
+.mini-market-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.mini-market-col-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mini-market-col-right {
+    text-align: right;
+}
+
+/* SMART BADGE SYSTEM */
+.smart-badge {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    color: white;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.smart-badge.opportunity {
+    background: #D97757;
+}
+
+.smart-badge.popular {
+    background: #2980b9;
+}
+
+.smart-badge.cheap {
+    background: #27ae60;
+}
+
+/* MAIN PRICE UNIT DISPLAY */
+.price-unit-main {
+    text-decoration: none;
+    font-size: 12px;
+    margin-left: 4px;
+    color: var(--text-secondary);
+}
+
+/* 2. Katman: Özet Bilgi (Kaç market, ne kadar fark) */
+.summary-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-family: var(--font-sans);
+    color: var(--text-secondary);
+}
+
+.summary-dot {
+    width: 3px;
+    height: 3px;
+    background: #666;
+    border-radius: 50%;
+}
+
+.summary-highlight {
+    color: #2ecc71;
+    /* Kazanç yeşili */
+    font-weight: 600;
+}
+
+/* Detay Sayfası */
+/* SKELETON LOADING (PREMIUM) */
+.skeleton-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px 16px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.skeleton-img {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.skeleton-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.skeleton-line {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+/* RESULTS HEADER UPDATE */
+.results-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.results-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.results-meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+}
+
+.loading-state {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-family: var(--font-sans);
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.app-footer {
+    text-align: center;
+    padding: 32px 0;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* INFINITE SCROLL LOADER */
+.infinite-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px 0;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+}
+
+.loader-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.end-of-results {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+}
+
+/* ==================== */
+/* MOBILE UX IMPROVEMENTS */
+/* ==================== */
+
+/* Tablet Breakpoint */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 0 16px;
+    }
+
+    .app-header {
+        padding: 20px 0;
+    }
+
+    .search-title {
+        font-size: 36px;
+        line-height: 1.15;
+    }
+
+    .search-subtitle {
+        font-size: 16px;
+        margin-bottom: 32px;
+    }
+
+    .search-box {
+        flex-direction: column;
+        padding: 12px;
+        gap: 12px;
+        border-radius: 20px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 16px 20px;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .search-btn {
+        width: 100%;
+        padding: 16px 24px;
+        font-size: 1.1rem;
+        margin-left: 0;
+        border-radius: 12px;
+    }
+
+    .results-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+
+    .results-title {
+        font-size: 1.25rem;
+    }
+
+    .results-meta {
+        font-size: 0.8rem;
+    }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 640px) {
+    .app-container {
+        padding: 0 12px;
+    }
+
+    .app-header {
+        padding: 16px 0;
+    }
+
+    .logo-text {
+        font-size: 20px;
+    }
+
+    .main-content {
+        padding-bottom: 40px;
+    }
+
+    .search-section {
+        padding: 0 4px;
+    }
+
+    .search-title {
+        font-size: 28px;
+        margin-bottom: 12px;
+    }
+
+    .search-subtitle {
+        font-size: 14px;
+        margin-bottom: 24px;
+        padding: 0 8px;
+    }
+
+    .search-box {
+        margin: 0 auto 24px auto;
+    }
+
+    .search-input {
+        padding: 14px 16px;
+        font-size: 1rem;
+    }
+
+    .search-btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+        /* Touch-friendly minimum size */
+        min-height: 48px;
+    }
+
+    /* Product Cards - Stack Layout */
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .product-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .product-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .product-img,
+    .product-img-placeholder {
+        width: 56px;
+        height: 56px;
+    }
+
+    .product-info {
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .product-brand {
+        font-size: 11px;
+    }
+
+    .product-title {
+        font-size: 16px;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+    }
+
+    .summary-info {
+        font-size: 11px;
+        margin-top: 4px;
+    }
+
+    /* Price Section - Full Width */
+    .product-prices {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        min-width: unset;
+    }
+
+    .price-container {
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    .price-currency {
+        font-size: 1rem;
+    }
+
+    .price-range {
+        font-size: 1.8rem;
+    }
+
+    .price-details {
+        margin-top: 0;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+    }
+
+    .price-max {
+        font-size: 0.85rem;
+    }
+
+    .price-unit-main {
+        font-size: 11px;
+    }
+
+    /* Mini Market List - Compact */
+    .mini-market-list {
+        margin-top: 10px;
+        padding-top: 10px;
+        gap: 6px;
+    }
+
+    .mini-market-item {
+        font-size: 12px;
+        padding: 4px 0;
+    }
+
+    .mini-market-item.best {
+        font-size: 13px;
+        padding: 6px 8px;
+        background: rgba(217, 119, 87, 0.1);
+        border-radius: 8px;
+        margin: 0 -8px;
+    }
+
+    .unit-price-tag {
+        font-size: 9px;
+    }
+
+    /* Badge - Adjust for mobile */
+    .smart-badge {
+        position: static;
+        margin-left: auto;
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    /* Skeleton Loading */
+    .skeleton-card {
+        height: 180px;
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .skeleton-img {
+        width: 56px;
+        height: 56px;
+    }
+
+    /* Infinite Loader */
+    .infinite-loader {
+        padding: 24px 0;
+        font-size: 13px;
+    }
+
+    .end-of-results {
+        padding: 24px 0;
+        font-size: 13px;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 380px) {
+    .search-title {
+        font-size: 24px;
+    }
+
+    .search-subtitle {
+        font-size: 13px;
+    }
+
+    .product-title {
+        font-size: 15px;
+    }
+
+    .price-range {
+        font-size: 1.6rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Larger touch targets */
+    .search-btn {
+        min-height: 52px;
+    }
+
+    .product-card {
+        /* Disable hover effects on touch */
+        transform: none !important;
+    }
+
+    .product-card:active {
+        background: #2A2A2A;
+        transform: scale(0.99) !important;
+    }
+
+    .mini-market-item:hover {
+        color: inherit;
+        opacity: inherit;
+    }
+
+    /* Remove hover states that don't work on touch */
+    .search-btn:hover {
+        transform: none;
+    }
+}
+
+/* Safe Area for Notched Devices */
+@supports (padding: max(0px)) {
+    .app-container {
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+    }
+
+    .main-content {
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Landscape Mobile */
+@media (max-width: 900px) and (orientation: landscape) {
+    .search-section {
+        padding-top: 0;
+    }
+
+    .search-title {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .search-subtitle {
+        margin-bottom: 16px;
+    }
+
+    .main-content {
+        justify-content: flex-start;
+        padding-top: 20px;
+    }
+}

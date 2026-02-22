@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#191919">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- SEO Meta Tags -->
+    <title>Fiyat Kıyası - A101, BİM, Migros, ŞOK Market Fiyat Karşılaştırma</title>
+    <meta name="description"
+        content="Türkiye'nin en kapsamlı market fiyat karşılaştırma sitesi. A101, BİM, Migros, ŞOK, CarrefourSA, Tarım Kredi ve Hakmar fiyatlarını tek ekranda kıyaslayın, en ucuz marketi anında bulun.">
+    <meta name="keywords"
+        content="fiyat karşılaştırma, market fiyatları, A101, BİM, Migros, ŞOK, CarrefourSA, en ucuz market, market kıyaslama">
+    <meta name="author" content="Fiyat Kıyası">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fiyatkiyasla.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fiyatkiyasla.com/">
+    <meta property="og:title" content="Fiyat Kıyası - Market Fiyat Karşılaştırma">
+    <meta property="og:description"
+        content="A101, BİM, Migros, ŞOK, CarrefourSA fiyatlarını tek ekranda kıyaslayın. En ucuz marketi anında bulun.">
+    <meta property="og:image" content="https://fiyatkiyasla.com/og-image.png">
+    <meta property="og:locale" content="tr_TR">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://fiyatkiyasla.com/">
+    <meta name="twitter:title" content="Fiyat Kıyası - Market Fiyat Karşılaştırma">
+    <meta name="twitter:description" content="A101, BİM, Migros, ŞOK, CarrefourSA fiyatlarını tek ekranda kıyaslayın.">
+    <meta name="twitter:image" content="https://fiyatkiyasla.com/og-image.png">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Fiyat Kıyası",
+        "description": "Türkiye'nin en kapsamlı market fiyat karşılaştırma sitesi",
+        "url": "https://fiyatkiyasla.com",
+        "applicationCategory": "ShoppingApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "TRY"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1250"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Fiyat Kıyası",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://fiyatkiyasla.com/logo.png"
+            }
+        }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400;500;600;700&display=block"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-text">Fiyat <span class="logo-accent">Kıyası</span></span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="search-section">
+                <h1 class="search-title">Aynı ürünü<br><span>en ucuz</span> markette bul.</h1>
+                <p class="search-subtitle">Tek ekranda A101, BİM, Migros, ŞOK, CarrefourSA, Tarım Kredi ve Hakmar
+                    fiyatlarını kıyasla.</p>
+
+                <div class="search-box">
+                    <input type="text" id="productSearch" placeholder="Ne aramak istersiniz?" class="search-input"
+                        autofocus>
+                    <button class="search-btn" id="searchBtn">Ara</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection">
+                <div class="results-content">
+                    <!-- Liste Görünümü -->
+                    <div id="listView"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js?v=2"></script>
+</body>
+
+</html>
