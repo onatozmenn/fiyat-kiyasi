@@ -2,7 +2,7 @@
   <img src="./docs/logo-readme.png" alt="Fiyat Kiyasi Logo" width="620" />
 </p>
 
-<h1 align="center">Fiyat Kiyasi</h1>
+<h1 align="center">Fiyat Kıyası</h1>
 
 <p align="center">
   Compare grocery prices across A101, BIM, Migros, SOK, CarrefourSA, Tarim Kredi, and Hakmar in one search.
