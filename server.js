@@ -595,8 +595,9 @@ function validateSearchParams(params) {
         keywords = keywords.substring(0, MAX_KEYWORD_LENGTH);
     }
 
-    // Pages
-    let pages = parseInt(params.pages, 10);
+    // Pages (accept both "pages" and legacy "page")
+    const incomingPage = params.pages ?? params.page;
+    let pages = parseInt(incomingPage, 10);
     if (isNaN(pages) || pages < 0) pages = 0;
 
     // Size

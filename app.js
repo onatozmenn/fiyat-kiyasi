@@ -110,8 +110,12 @@ function checkScroll() {
 async function loadMoreResults() {
     if (isLoading || !hasMoreResults) return;
 
+    const previousPage = currentPage;
     currentPage++;
-    await search(currentKeywords, false);
+    const ok = await search(currentKeywords, false);
+    if (!ok) {
+        currentPage = previousPage;
+    }
 }
 
 function typeWriter(input) {
@@ -135,6 +139,7 @@ async function search(keywords, isNewSearch = true) {
     searchController = new AbortController();
 
     isLoading = true;
+    let requestSucceeded = false;
 
     const listView = document.getElementById('listView');
     listView.style.display = 'block';
@@ -182,8 +187,7 @@ async function search(keywords, isNewSearch = true) {
             }
             hideLoadingMore();
             hasMoreResults = false;
-            isLoading = false;
-            return;
+            return false;
         }
 
         let products = Array.isArray(data) ? data : (data.content || []);
@@ -230,8 +234,9 @@ async function search(keywords, isNewSearch = true) {
             const endIndicator = document.getElementById('endOfResults');
             if (endIndicator) endIndicator.style.display = 'block';
         }
+        requestSucceeded = true;
     } catch (err) {
-        if (err.name === 'AbortError') return;
+        if (err.name === 'AbortError') return false;
         console.error(err);
         if (isNewSearch) {
             listView.innerHTML = `<div class="loading-state"><p class="loading-text">Bağlantı hatası</p></div>`;
@@ -240,6 +245,8 @@ async function search(keywords, isNewSearch = true) {
     } finally {
         isLoading = false;
     }
+
+    return requestSucceeded;
 }
 
 function showLoadingMore() {
@@ -344,7 +351,7 @@ function renderProductCard(p) {
                 <div class="mini-market-item ${isBest ? 'best' : ''}">
                     <div class="mini-market-row">
                         <div class="mini-market-col-left">
-                            <span class="mini-market-name">${getMarketName(m.name)}</span>
+                            <span class="mini-market-name">${escapeHtml(getMarketName(m.name))}</span>
                         </div>
                         <div class="mini-market-col-right">
                             <span class="mini-market-price">₺${m.price.toFixed(2)}</span>

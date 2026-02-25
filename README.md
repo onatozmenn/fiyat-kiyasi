@@ -1,68 +1,133 @@
-# Fiyat Kıyası — Turkish Grocery Price Comparison
+<p align="center">
+  <img src="./docs/logo.svg" alt="Fiyat Kiyasi Logo" width="760" />
+</p>
 
-> Compare prices across **A101, BİM, Migros, ŞOK, CarrefourSA, Tarım Kredi & Hakmar** in a single search.
+<h1 align="center">Fiyat Kiyasi</h1>
 
-![Node.js](https://img.shields.io/badge/Node.js-22+-339933?logo=node.js&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
+<p align="center">
+  Compare grocery prices across A101, BIM, Migros, SOK, CarrefourSA, Tarim Kredi, and Hakmar in one search.
+</p>
 
-## What is this?
+<p align="center">
+  <a href="https://github.com/onatozmenn/fiyat-kiyasi/stargazers">
+    <img src="https://img.shields.io/github/stars/onatozmenn/fiyat-kiyasi?style=for-the-badge" alt="GitHub stars" />
+  </a>
+  <a href="https://github.com/onatozmenn/fiyat-kiyasi/network/members">
+    <img src="https://img.shields.io/github/forks/onatozmenn/fiyat-kiyasi?style=for-the-badge" alt="GitHub forks" />
+  </a>
+  <a href="https://github.com/onatozmenn/fiyat-kiyasi/issues">
+    <img src="https://img.shields.io/github/issues/onatozmenn/fiyat-kiyasi?style=for-the-badge" alt="GitHub issues" />
+  </a>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/license-ISC-blue?style=for-the-badge" alt="License ISC" />
+  </a>
+  <img src="https://img.shields.io/badge/node-22%2B-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node 22+" />
+</p>
 
-Turkish supermarkets price identical products differently — sometimes wildly so. **Fiyat Kıyası** lets you search for any grocery item and instantly see which store sells it cheapest, with unit prices, savings badges, and cross-market grouping.
+<p align="center">
+  <a href="#quick-start">Quick Start</a> |
+  <a href="#screenshot">Screenshot</a> |
+  <a href="#how-it-works-technical">Technical Details</a> |
+  <a href="#api-endpoints">API</a> |
+  <a href="#roadmap">Roadmap</a>
+</p>
 
-The core challenge: markets name the same product differently. Migros says *"Coca-Cola Cam 200 Ml"*, A101 says *"Coca Cola Gazlı İçecek Kola Cam 200 ML"*. Our matching algorithm groups them into a single card showing all prices side-by-side.
+## Why This Project?
+
+People overpay for the same product every day because each market uses different naming and pricing patterns.
+Fiyat Kiyasi solves that by grouping equivalent products and showing best price first.
+
+If this project helps you save money, give it a star on GitHub:
+`https://github.com/onatozmenn/fiyat-kiyasi`
+
+## Screenshot
+
+![Fiyat Kiyasi home screen](./docs/screenshots/home.png)
 
 ## Features
 
-- **Real-time price data** from 7 major Turkish supermarket chains
-- **Smart product grouping** — matches identical products across markets despite different naming conventions
-- **Unit price calculation** — automatically parses weight/volume (kg, g, L, ml) and multipacks (6x200ml)
-- **Smart badges** — FIRSAT (deal), POPÜLER (popular), UCUZ (cheapest)
-- **Infinite scroll** with skeleton loading
-- **Dark theme** responsive UI
-- **Server-side caching** with LRU eviction
-- **Rate limiting** and input validation
+- Real-time price data from major Turkish grocery chains
+- Smart cross-market product grouping
+- Quantity parsing (`kg`, `g`, `L`, `ml`, `x` multipack)
+- Unit price calculation
+- Smart badges (`FIRSAT`, `POPULAR`, `UCUZ`)
+- Infinite scroll with loading states
+- Server-side cache with eviction
+- Rate limit + payload + input validation
+- Zero backend dependencies (pure Node.js `http`)
 
-## How the Matching Works
+## How It Works (Technical)
 
-Products go through a 3-layer matching pipeline:
+### 1. Request Pipeline
 
+1. Browser sends `POST /api/search` with `keywords`, `pages`, `size`
+2. Backend validates and normalizes input
+3. Cache key is generated from normalized payload
+4. If cache miss, backend calls `api.marketfiyati.org.tr`
+5. Raw products are grouped by compatibility rules
+6. Backend returns UI-ready `viewModel` array
+
+### 2. Product Matching Engine
+
+Matching is intentionally strict where needed, flexible where useful:
+
+1. **Quantity filter**  
+   Products must have same parsed quantity and unit.
+2. **Variant filter**  
+   Incompatible variants (`zero` vs `light`, etc.) are blocked.
+3. **Similarity scoring**  
+   Uses both Levenshtein and token containment.
+4. **Brand-aware threshold**  
+   Same brand can pass with lower threshold.
+
+This design reduces false matches while still grouping differently named items from different markets.
+
+### 3. Backend Generated View Model
+
+For each grouped product:
+
+- markets sorted by price
+- `minPrice`, `maxPrice`, savings percentage
+- optional unit price per market
+- smart badge type for frontend rendering
+
+Frontend stays simple and fast because expensive logic is server-side.
+
+### 4. Security and Reliability
+
+- CORS allowlist
+- Rate limiting per IP
+- Max request body size
+- Input sanitization and JSON validation
+- Upstream timeout + retry strategy
+- Graceful shutdown handlers
+
+## Architecture
+
+```text
+Browser (Vanilla JS)
+   |
+   v
+/api/search (Node http server)
+   |-- validate params
+   |-- rate limit
+   |-- cache lookup
+   |-- upstream call (marketfiyati)
+   |-- product grouping + scoring
+   v
+UI-ready JSON response
 ```
-┌─────────────────────────────────────────────────┐
-│  1. FEATURE EXTRACTION                          │
-│     Title → coreName + quantity + variants       │
-│     "Coca Cola Gazlı İçecek Kola Cam 200 ML"   │
-│     → core: "coca cola kola"                     │
-│     → qty: 0.2L                                  │
-│     → variants: [cam]                            │
-├─────────────────────────────────────────────────┤
-│  2. HARD FILTERS (must pass all)                │
-│     ✓ Same quantity (200ml = 200ml)              │
-│     ✓ Compatible variants (cam ≈ pet ≈ none)    │
-│     ✗ Different variants block (zero ≠ light)   │
-├─────────────────────────────────────────────────┤
-│  3. SIMILARITY SCORING                          │
-│     Levenshtein distance    → 0.72              │
-│     Token containment       → 0.85              │
-│     Best score: max(0.72, 0.85) = 0.85          │
-│     Same brand? threshold = 0.40 → ✓ MATCH      │
-└─────────────────────────────────────────────────┘
-```
-
-**Token Containment** solves the core problem: if *all tokens* of the shorter name exist in the longer name, they're the same product — regardless of how much extra noise one market added.
-
-**Brand-aware thresholds** prevent false positives: same brand gets a lenient 0.40 threshold, unknown brands require 0.55+, and very short names without brands need strict Levenshtein > 0.70.
 
 ## Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
-| **Backend** | Node.js (pure `http` module, zero dependencies) |
-| **Frontend** | Vanilla JS, CSS |
-| **Data Source** | [marketfiyati.org.tr](https://marketfiyati.org.tr) API |
-| **Matching** | Levenshtein + Token Containment + Brand Normalization |
+|---|---|
+| Backend | Node.js (`http`, `https`, `fs`, `path`) |
+| Frontend | Vanilla JS + CSS |
+| Data Source | `api.marketfiyati.org.tr` |
+| Matching | Levenshtein + token containment + brand normalization |
 
-No Express. No React. No build step. Just `node server.js`.
+No Express. No React. No build step.
 
 ## Quick Start
 
@@ -73,46 +138,73 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3001` and search for anything — *süt*, *kola*, *makarna*, *çikolata*.
-
-## Project Structure
-
-```
-├── server.js      # API proxy, product grouping, caching, rate limiting
-├── app.js         # Frontend logic, rendering, infinite scroll
-├── index.html     # Single page with SEO meta tags & JSON-LD
-├── styles.css     # Dark theme, responsive design
-└── package.json   # Scripts: start, dev (--watch)
-```
+Open `http://localhost:3001`
 
 ## API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/search` | POST | Search products by keyword |
-| `/api/product` | POST | Get product by identity |
-| `/api/similar` | POST | Find similar products |
-| `/api/health` | GET | Health check |
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/api/search` | `POST` | Search + grouped pricing results |
+| `/api/product` | `POST` | Search by identity |
+| `/api/similar` | `POST` | Similar product lookup |
+| `/api/health` | `GET` | Health and memory/cache info |
 
-**Search example:**
+Search example:
+
 ```bash
 curl -X POST http://localhost:3001/api/search \
   -H "Content-Type: application/json" \
-  -d '{"keywords": "coca cola", "page": 1}'
+  -d '{"keywords":"coca cola","pages":1,"size":24}'
 ```
 
 ## Configuration
 
-All tunable constants are at the top of `server.js`:
+Core runtime constants in [`server.js`](./server.js):
 
 | Constant | Default | Description |
-|----------|---------|-------------|
-| `CONF_SIMILARITY_THRESHOLD` | 0.55 | Minimum similarity score for grouping |
-| `CONF_BADGE_OPPORTUNITY` | 15 | Min savings % for FIRSAT badge |
-| `CONF_MARKET_POPULARITY_MIN` | 4 | Min markets for POPÜLER badge |
-| `MAX_REQUESTS_PER_MINUTE` | 30 | Rate limit per IP |
-| `CACHE_TTL` | 300000 | Cache duration (5 min) |
+|---|---:|---|
+| `RATE_LIMIT_WINDOW` | `60000` | Rate limit window (ms) |
+| `RATE_LIMIT_MAX` | `60` | Max API requests/IP/window |
+| `MAX_BODY_SIZE` | `10240` | Max request body size (bytes) |
+| `MAX_KEYWORD_LENGTH` | `200` | Max keyword length |
+| `MAX_PAGE_SIZE` | `100` | Max page size |
+| `CACHE_TTL` | `60000` | Response cache TTL (ms) |
+| `MAX_CACHE_SIZE` | `500` | Max cache entries |
+| `CONF_SIMILARITY_THRESHOLD` | `0.55` | Base match threshold |
+| `CONF_BADGE_OPPORTUNITY` | `15` | Min savings for `FIRSAT` |
+| `CONF_MARKET_POPULARITY_MIN` | `4` | Min markets for `POPULAR` |
+
+## Performance Notes
+
+- Current grouping is `O(n^2)` by design, tuned for small page windows.
+- Levenshtein calculations are memoized with bounded cache.
+- Cache hits are significantly faster than upstream calls.
+
+## Roadmap
+
+- Better product detail page
+- Better analytics for market spread and trend
+- Test suite for matching edge cases
+- Optional Redis cache adapter
+- Optional mobile app wrapper
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repo
+2. Create a feature branch
+3. Commit focused changes
+4. Open a PR with before/after notes
+
+If you want to help, start with issues labeled `good first issue`.
 
 ## License
 
-MIT
+This project is licensed under the ISC License. See [LICENSE](./LICENSE).
+
+---
+
+<p align="center">
+  Built for fast price comparison. If you find it useful, please star the repo.
+</p>
