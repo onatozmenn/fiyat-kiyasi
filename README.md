@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/logo.svg" alt="Fiyat Kiyasi Logo" width="760" />
+  <img src="./docs/logo-name.svg" alt="Fiyat Kiyasi Logo" width="760" />
 </p>
 
 <h1 align="center">Fiyat Kiyasi</h1>
