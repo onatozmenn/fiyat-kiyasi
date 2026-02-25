@@ -31,6 +31,12 @@ const ALLOWED_ORIGINS = [
     'https://www.fiyatkiyasla.com',
     ...(process.env.CORS_ORIGIN ? [process.env.CORS_ORIGIN] : [])
 ];
+const LOCAL_ORIGIN_REGEX = /^https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?::\d{1,5})?$/i;
+
+function isAllowedOrigin(origin) {
+    if (!origin) return false;
+    return ALLOWED_ORIGINS.includes(origin) || LOCAL_ORIGIN_REGEX.test(origin);
+}
 
 // Cache
 const CACHE_TTL = 60 * 1000;
@@ -645,7 +651,8 @@ const server = http.createServer(async (req, res) => {
 
     // CORS
     const origin = req.headers.origin;
-    if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Vary', 'Origin');
+    if (isAllowedOrigin(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');

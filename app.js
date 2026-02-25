@@ -3,8 +3,9 @@
 // Backend does the heavy lifting via /api/search
 
 // API Base URL - Auto-detects Environment
-const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_BASE = isDev && window.location.port !== '3001'
+const isLocalHost = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+const isFileProtocol = window.location.protocol === 'file:';
+const API_BASE = (isFileProtocol || (isLocalHost && window.location.port !== '3001'))
     ? 'http://localhost:3001/api'
     : '/api';
 
@@ -238,8 +239,11 @@ async function search(keywords, isNewSearch = true) {
     } catch (err) {
         if (err.name === 'AbortError') return false;
         console.error(err);
+        const errorText = err instanceof TypeError
+            ? 'API baglantisi kurulamadı. Sunucu icin terminalde "npm run dev" calistirin.'
+            : 'Baglanti hatasi';
         if (isNewSearch) {
-            listView.innerHTML = `<div class="loading-state"><p class="loading-text">Bağlantı hatası</p></div>`;
+            listView.innerHTML = `<div class="loading-state"><p class="loading-text">${escapeHtml(errorText)}</p></div>`;
         }
         hideLoadingMore();
     } finally {
